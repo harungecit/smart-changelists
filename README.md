@@ -10,15 +10,11 @@
 </p>
 
 <p align="center">
-  <a href="https://marketplace.visualstudio.com/items?itemName=harungecit.git-changelists">
-    <img src="https://img.shields.io/visual-studio-marketplace/v/harungecit.git-changelists?style=flat-square&label=VS%20Code%20Marketplace" alt="VS Code Marketplace">
-  </a>
-  <a href="https://github.com/harungecit/git-changelists/releases">
-    <img src="https://img.shields.io/github/v/release/harungecit/git-changelists?style=flat-square&label=GitHub%20Release" alt="GitHub Release">
-  </a>
-  <a href="https://www.apache.org/licenses/LICENSE-2.0">
-    <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square" alt="License: Apache 2.0">
-  </a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=harungecit.git-changelists"><img src="https://img.shields.io/visual-studio-marketplace/v/harungecit.git-changelists?style=flat-square&label=Marketplace" alt="VS Code Marketplace"></a>
+  &nbsp;
+  <a href="https://github.com/harungecit/git-changelists/releases"><img src="https://img.shields.io/github/v/release/harungecit/git-changelists?style=flat-square&label=Release" alt="GitHub Release"></a>
+  &nbsp;
+  <a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square" alt="License"></a>
 </p>
 
 ---
@@ -49,7 +45,7 @@
 1. Download the latest `.vsix` file from [GitHub Releases](https://github.com/harungecit/git-changelists/releases)
 2. Install via command line:
 ```bash
-code --install-extension git-changelists-1.0.0.vsix
+code --install-extension git-changelists-1.1.0.vsix
 ```
 
 ## Quick Start
