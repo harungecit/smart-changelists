@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0] - 2025-12-30
+
+### Added
+- **Multi-select delete** - Select multiple snapshots (Ctrl/Cmd + click) and delete them all at once
+- New icon designs
+
+---
+
 ## [1.1.3] - 2025-12-13
 
 ### Added

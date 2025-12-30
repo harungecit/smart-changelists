@@ -2,7 +2,7 @@
   "name": "smart-changelists",
   "displayName": "Smart Changelists",
   "description": "JetBrains-style changelists for VS Code. Save snapshots of your changes, switch between versions, and commit selectively.",
-  "version": "1.1.3",
+  "version": "1.2.0",
   "publisher": "harungecit",
   "author": {
     "name": "Harun Geçit",

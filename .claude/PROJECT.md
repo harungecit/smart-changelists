@@ -9,7 +9,7 @@ VS Code extension providing JetBrains-style changelists. Save snapshots of file 
 |-------|-------|
 | Name | smart-changelists |
 | Publisher | harungecit |
-| Current Version | 1.1.3 |
+| Current Version | 1.2.0 |
 | License | Apache-2.0 |
 | VS Code Engine | ^1.85.0 |
 | Node.js | 22 |
