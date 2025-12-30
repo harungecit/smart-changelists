@@ -81,7 +81,7 @@ function registerCommands(
         ['smartChangelists.unshelveAll', (arg) => unshelveAll(service, arg)],
         ['smartChangelists.applyAndStage', (arg) => applyAndStage(service, arg)],
         ['smartChangelists.applyAllAndStage', (arg) => applyAllAndStage(service, arg)],
-        ['smartChangelists.deleteShelvedFile', (arg) => deleteShelvedFile(service, arg)],
+        ['smartChangelists.deleteShelvedFile', (arg, ...args) => deleteShelvedFile(service, arg, args)],
 
         // Commit operations
         ['smartChangelists.commitChangelist', (arg) => commitChangelist(service, arg)],
@@ -399,22 +399,53 @@ async function unshelveAll(service: ChangelistService, arg: unknown): Promise<vo
     }
 }
 
-async function deleteShelvedFile(service: ChangelistService, arg: unknown): Promise<void> {
-    const { changelistId, relativePath } = getShelvedFileFromArg(arg);
+async function deleteShelvedFile(
+    service: ChangelistService,
+    arg: unknown,
+    additionalArgs: unknown[]
+): Promise<void> {
+    // Collect all selected files
+    const files: Array<{ changelistId: string; relativePath: string }> = [];
 
-    if (!changelistId || !relativePath) {
+    const extractFile = (item: unknown) => {
+        const { changelistId, relativePath } = getShelvedFileFromArg(item);
+        if (changelistId && relativePath) {
+            files.push({ changelistId, relativePath });
+        }
+    };
+
+    // Extract first selected item
+    extractFile(arg);
+
+    // Extract additional selected items (multi-select)
+    if (Array.isArray(additionalArgs) && Array.isArray(additionalArgs[0])) {
+        (additionalArgs[0] as unknown[]).forEach(extractFile);
+    }
+
+    if (files.length === 0) {
         showWarning('No shelved file selected');
         return;
     }
 
+    // Show confirmation dialog
     const proceed = await promptConfirm(
-        `Delete snapshot "${path.basename(relativePath)}"? This cannot be undone.`
+        files.length === 1
+            ? `Delete snapshot "${path.basename(files[0].relativePath)}"? This cannot be undone.`
+            : `Delete ${files.length} snapshots? This cannot be undone.`
     );
 
-    if (proceed) {
-        await service.deleteShelvedFile(changelistId, relativePath);
-        showInfo(`Deleted snapshot: ${path.basename(relativePath)}`);
+    if (!proceed) return;
+
+    // Delete all selected files
+    for (const file of files) {
+        await service.deleteShelvedFile(file.changelistId, file.relativePath);
     }
+
+    showInfo(
+        files.length === 1
+            ? `Deleted snapshot: ${path.basename(files[0].relativePath)}`
+            : `Deleted ${files.length} snapshots`
+    );
 }
 
 async function applyAndStage(service: ChangelistService, arg: unknown): Promise<void> {
