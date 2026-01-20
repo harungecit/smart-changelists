@@ -36,7 +36,7 @@
 - [x] Multi-select delete for snapshots
 - [x] New icon designs
 
-### v2.0.0 (Major Release)
+### v2.0.1 (Major Release)
 - [x] Multi-root workspace support
 - [x] Nested git repos / submodule detection
 - [x] Activity Bar always visible (even without git)
@@ -45,6 +45,7 @@
 - [x] RepositoryManager class
 - [x] Automatic state migration from v1.x
 - [x] State version 4
+- [x] Fix: Shelve command works from command palette
 
 ---
 
