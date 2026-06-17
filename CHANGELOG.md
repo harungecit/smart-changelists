@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [2.1.0] - 2026-06-17
 
 ### Added
 - **Hide assigned files from Working Changes** - Files assigned to a custom changelist are now removed from the "Working Changes" list, so you can declutter the working view step-by-step and keep changes you never intend to commit (e.g. local config tweaks) out of sight. Controlled by the new `smartChangelists.hideAssignedFromWorkingChanges` setting (**enabled by default**). The working file on disk is left untouched.
