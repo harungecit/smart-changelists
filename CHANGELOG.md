@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- **Hide assigned files from Working Changes** - Files assigned to a custom changelist are now removed from the "Working Changes" list, so you can declutter the working view step-by-step and keep changes you never intend to commit (e.g. local config tweaks) out of sight. Controlled by the new `smartChangelists.hideAssignedFromWorkingChanges` setting (**enabled by default**). The working file on disk is left untouched.
+- **Move Back to Working Changes** - New right-click action on a snapshot that un-assigns the file (removes its snapshot across changelists) so it reappears in Working Changes.
+
+### Changed
+- **"Commit Working Changes" excludes assigned files** - Files assigned to a custom changelist are no longer staged or committed by "Commit Working Changes"; they must be committed via their changelist (or actively moved back to working). This prevents accidentally committing temporary changes.
+
+> **Note:** `hideAssignedFromWorkingChanges` defaults to `true`, so after updating, files you previously shelved to a changelist will no longer appear in Working Changes. Set it to `false` to restore the previous behavior.
+
+---
+
 ## [2.0.1] - 2026-01-20
 
 ### Added

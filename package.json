@@ -100,6 +100,12 @@
         "category": "Smart Changelists"
       },
       {
+        "command": "smartChangelists.moveBackToWorking",
+        "title": "Move Back to Working Changes",
+        "icon": "$(arrow-left)",
+        "category": "Smart Changelists"
+      },
+      {
         "command": "smartChangelists.unshelveAll",
         "title": "Restore All to Working",
         "icon": "$(export)",
@@ -311,6 +317,11 @@
           "group": "1_shelved@1"
         },
         {
+          "command": "smartChangelists.moveBackToWorking",
+          "when": "view == smartChangelistsView && viewItem == shelved-file",
+          "group": "1_shelved@4"
+        },
+        {
           "command": "smartChangelists.applyAndStage",
           "when": "view == smartChangelistsView && viewItem == shelved-file",
           "group": "1_shelved@2"
@@ -374,6 +385,11 @@
           "type": "boolean",
           "default": false,
           "description": "Enable multi-version comparison and merge features (experimental)"
+        },
+        "smartChangelists.hideAssignedFromWorkingChanges": {
+          "type": "boolean",
+          "default": true,
+          "description": "Hide files from the Working Changes list (and from 'Commit Working Changes') once they have been assigned to a custom changelist. The working file on disk is left untouched."
         }
       }
     },

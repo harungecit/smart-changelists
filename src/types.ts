@@ -156,6 +156,7 @@ export interface ChangelistConfig {
     confirmBeforeRevert: boolean;
     saveSnapshotsToFile: boolean;
     enableVersionComparison: boolean;
+    hideAssignedFromWorkingChanges: boolean;
 }
 
 /**
