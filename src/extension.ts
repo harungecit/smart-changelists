@@ -197,6 +197,7 @@ function registerCommands(context: vscode.ExtensionContext): void {
         // Shelve/Unshelve operations
         ['smartChangelists.shelveFile', (arg, ...args) => shelveFile(arg, args)],
         ['smartChangelists.unshelveFile', (arg) => unshelveFile(arg)],
+        ['smartChangelists.moveBackToWorking', (arg) => moveBackToWorking(arg)],
         ['smartChangelists.unshelveAll', (arg) => unshelveAll(arg)],
         ['smartChangelists.applyAndStage', (arg) => applyAndStage(arg)],
         ['smartChangelists.applyAllAndStage', (arg) => applyAllAndStage(arg)],
@@ -562,6 +563,23 @@ async function unshelveFile(arg: unknown): Promise<void> {
     }
 }
 
+async function moveBackToWorking(arg: unknown): Promise<void> {
+    const service = getServiceFromArg(arg);
+    const { relativePath } = getShelvedFileFromArg(arg);
+
+    if (!service || !relativePath) {
+        showWarning('No snapshot selected');
+        return;
+    }
+
+    try {
+        await service.moveBackToWorking(relativePath);
+        showInfo(`Moved back to working changes: ${path.basename(relativePath)}`);
+    } catch (error) {
+        showError(`Move failed: ${error instanceof Error ? error.message : String(error)}`);
+    }
+}
+
 async function unshelveAll(arg: unknown): Promise<void> {
     const service = getServiceFromArg(arg);
     const changelistId = getChangelistIdFromArg(arg);
@@ -764,7 +782,7 @@ async function commitWorkingChanges(): Promise<void> {
         return;
     }
 
-    const files = service.getChangedFiles();
+    const files = service.getVisibleWorkingFiles();
 
     if (files.length === 0) {
         showWarning('No working changes to commit');

@@ -94,7 +94,8 @@ export function getConfig(): ChangelistConfig {
         confirmBeforeCommit: config.get('confirmBeforeCommit', true),
         confirmBeforeRevert: config.get('confirmBeforeRevert', true),
         saveSnapshotsToFile: config.get('saveSnapshotsToFile', false),
-        enableVersionComparison: config.get('enableVersionComparison', false)
+        enableVersionComparison: config.get('enableVersionComparison', false),
+        hideAssignedFromWorkingChanges: config.get('hideAssignedFromWorkingChanges', true)
     };
 }
 

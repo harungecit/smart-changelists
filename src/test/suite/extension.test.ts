@@ -40,6 +40,7 @@ suite('Extension Test Suite', () => {
             'smartChangelists.renameChangelist',
             'smartChangelists.shelveFile',
             'smartChangelists.unshelveFile',
+            'smartChangelists.moveBackToWorking',
             'smartChangelists.refreshAll'
         ];
 
@@ -66,6 +67,7 @@ suite('Extension Test Suite', () => {
         assert.ok(properties['smartChangelists.confirmBeforeRevert']);
         assert.ok(properties['smartChangelists.saveSnapshotsToFile']);
         assert.ok(properties['smartChangelists.enableVersionComparison']);
+        assert.ok(properties['smartChangelists.hideAssignedFromWorkingChanges']);
     });
 });
 
@@ -80,5 +82,6 @@ suite('Configuration Test Suite', () => {
         assert.strictEqual(config.get('confirmBeforeRevert'), true);
         assert.strictEqual(config.get('saveSnapshotsToFile'), false);
         assert.strictEqual(config.get('enableVersionComparison'), false);
+        assert.strictEqual(config.get('hideAssignedFromWorkingChanges'), true);
     });
 });

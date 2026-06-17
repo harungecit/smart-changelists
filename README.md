@@ -128,6 +128,7 @@ Enable `saveSnapshotsToFile` setting to save snapshots as real files in `.smartc
 | `smartChangelists.confirmBeforeRevert` | Show confirmation before reverting | `true` |
 | `smartChangelists.saveSnapshotsToFile` | Save snapshots to `.smartchangelists/` for CLI tools | `false` |
 | `smartChangelists.enableVersionComparison` | Enable version comparison features | `false` |
+| `smartChangelists.hideAssignedFromWorkingChanges` | Hide files from Working Changes once they're assigned to a custom changelist (working file on disk is untouched) | `true` |
 
 ## Multi-Repository Support
 

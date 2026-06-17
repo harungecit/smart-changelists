@@ -356,7 +356,7 @@ export class ChangelistTreeProvider implements
         const items: ChangelistTreeItem[] = [];
 
         for (const service of this.getServices()) {
-            const changedCount = service.getChangedFiles().length;
+            const changedCount = service.getVisibleWorkingFiles().length;
             const shelvedCount = service.getChangelists()
                 .reduce((sum, cl) => sum + cl.shelvedFiles.length, 0);
 
@@ -423,7 +423,7 @@ export class ChangelistTreeProvider implements
      * Get working file items for a service
      */
     private getWorkingFileItems(service: ChangelistService): ChangelistTreeItem[] {
-        const files = service.getChangedFiles();
+        const files = service.getVisibleWorkingFiles();
         return files.map(file =>
             new ChangelistTreeItem(
                 'working-file',

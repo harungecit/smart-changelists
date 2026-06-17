@@ -422,6 +422,37 @@ export class ChangelistService implements vscode.Disposable {
         return Array.from(this.changedFiles.values());
     }
 
+    /**
+     * Get the set of file paths (normalized) that are assigned to a custom
+     * (non-default) changelist. These are considered "moved out" of the
+     * working changes view.
+     */
+    public getAssignedPaths(): Set<string> {
+        const assigned = new Set<string>();
+        for (const cl of this.state.changelists) {
+            if (cl.isDefault) continue;
+            for (const sf of cl.shelvedFiles) {
+                assigned.add(normalizePath(sf.relativePath));
+            }
+        }
+        return assigned;
+    }
+
+    /**
+     * Get the working files that should be shown in the Working Changes list.
+     * When `hideAssignedFromWorkingChanges` is enabled, files already assigned
+     * to a custom changelist are filtered out. The working file on disk is
+     * never modified by this filtering.
+     */
+    public getVisibleWorkingFiles(): ChangedFile[] {
+        const files = this.getChangedFiles();
+        if (!getConfig().hideAssignedFromWorkingChanges) {
+            return files;
+        }
+        const assigned = this.getAssignedPaths();
+        return files.filter(f => !assigned.has(normalizePath(f.relativePath)));
+    }
+
     public getShelvedFilesForChangelist(changelistId: string): ShelvedFile[] {
         const changelist = this.getChangelist(changelistId);
         if (!changelist) return [];
@@ -727,7 +758,10 @@ export class ChangelistService implements vscode.Disposable {
             throw new Error('Git not initialized');
         }
 
-        const files = this.getChangedFiles();
+        // Only commit files visible in the Working Changes list. Files assigned
+        // to a custom changelist are excluded so they are never staged/committed
+        // without being actively selected.
+        const files = this.getVisibleWorkingFiles();
         if (files.length === 0) {
             throw new Error('No files to commit');
         }
@@ -860,6 +894,44 @@ export class ChangelistService implements vscode.Disposable {
         this._onDidChangeChangelists.fire();
 
         log(`Deleted shelved file: ${relativePath}`);
+    }
+
+    /**
+     * Move a file back to Working Changes by un-assigning it: removes its
+     * snapshot from every custom changelist (and any snapshot files), so it
+     * is no longer hidden from the working changes list. The working file on
+     * disk is left untouched.
+     */
+    public async moveBackToWorking(relativePath: string): Promise<void> {
+        const normalizedPath = normalizePath(relativePath);
+        let removed = 0;
+
+        for (const changelist of this.state.changelists) {
+            if (changelist.isDefault) continue;
+
+            const matches = changelist.shelvedFiles.filter(
+                f => normalizePath(f.relativePath) === normalizedPath
+            );
+            if (matches.length === 0) continue;
+
+            for (const sf of matches) {
+                this.deleteSnapshotFile(sf, changelist);
+            }
+            changelist.shelvedFiles = changelist.shelvedFiles.filter(
+                f => normalizePath(f.relativePath) !== normalizedPath
+            );
+            removed += matches.length;
+        }
+
+        if (removed === 0) {
+            return;
+        }
+
+        await this.saveState();
+        await this.refresh();
+        this._onDidChangeChangelists.fire();
+
+        log(`Moved back to working: ${relativePath} (removed ${removed} snapshot(s))`);
     }
 
     // ========== Export/Import ==========
